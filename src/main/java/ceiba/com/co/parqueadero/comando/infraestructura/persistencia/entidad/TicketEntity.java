@@ -37,5 +37,5 @@ public class TicketEntity {
 	@Column(name = "cilindraje", nullable = true)
 	private Integer cilindraje;
 	@Column(name = "totalAPagar", nullable = false)
-	private int totalAPagar;
+	private long totalAPagar;
 }
