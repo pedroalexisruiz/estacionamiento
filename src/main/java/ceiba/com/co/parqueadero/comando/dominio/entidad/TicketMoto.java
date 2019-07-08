@@ -18,8 +18,8 @@ public class TicketMoto extends Ticket {
 
 	@Override
 	public void calcularPrecioAPagar() {
-		// TODO Auto-generated method stub
-
+		int horasDeUso = super.calcularHorasDeParqueo();
+		
 	}
 
 	public TicketMoto() {
@@ -34,7 +34,7 @@ public class TicketMoto extends Ticket {
 	}
 
 	public TicketMoto(Long id, String placa, LocalDateTime horaDeEntrada, LocalDateTime horaDeSalida,
-			String tipoDeVehiculo, Integer totalAPagar, Integer cilindraje) {
+			String tipoDeVehiculo, Long totalAPagar, Integer cilindraje) {
 		super(id, placa, horaDeEntrada, horaDeSalida, tipoDeVehiculo, totalAPagar);
 		RequiredValidator.validateObjectRequired(cilindraje, CILINDRAJE_MOTO_VACIO);
 		this.cilindraje = cilindraje;

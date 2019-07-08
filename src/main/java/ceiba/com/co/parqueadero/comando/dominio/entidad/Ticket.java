@@ -1,8 +1,10 @@
 package ceiba.com.co.parqueadero.comando.dominio.entidad;
 
+import java.math.BigDecimal;
 import java.time.Duration;
 import java.time.LocalDateTime;
 
+import ceiba.com.co.parqueadero.comando.dominio.entidad.util.TiempoTranscurrido;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -19,12 +21,12 @@ public abstract class Ticket {
 	private LocalDateTime horaDeEntrada;
 	private LocalDateTime horaDeSalida;
 	private String tipoDeVehiculo;
-	private Integer totalAPagar;
+	private Long totalAPagar;
 
 	private static final double SEGUNDOS_EN_UNA_HORA = 3600d;
 	private static final int VEINTICUATRO_HORAS = 24;
 	protected static final int LIMITE_COBRO_POR_HORAS = 9;
-	
+
 	public static final String MOTO = "MOTO";
 	public static final String CARRO = "CARRO";
 
@@ -47,5 +49,44 @@ public abstract class Ticket {
 		long segundos = duracion.getSeconds();
 		return (int) Math.ceil((double) segundos / SEGUNDOS_EN_UNA_HORA);
 	}
+
+	long obtenerValorPorHoras(int horas, long precioPorHora) {
+		return horas * precioPorHora;
+	}
 	
+	protected long obtenerValorPorDias(int horasDeParqueo, long valorDia, long valorHora) {
+		long totalPagarPorDias;
+		long totalPagarPorHoras;
+		TiempoTranscurrido tiempoDeParqueo = obtenerTiempoDeParqueo(horasDeParqueo);
+		totalPagarPorDias = valorDia * tiempoDeParqueo.getDias();
+		totalPagarPorHoras = valorHora * tiempoDeParqueo.getHoras();
+		return totalPagarPorDias + totalPagarPorHoras;
+	}
+	
+	public TiempoTranscurrido obtenerTiempoDeParqueo(int horasDeParqueo) {
+		int dias;
+		int horas = 0;
+		TiempoTranscurrido tiempoTranscurrido = new TiempoTranscurrido();
+
+		if(horasDeParqueo<VEINTICUATRO_HORAS) {			
+			dias = 1;			
+		} else {
+			horas = horasDeParqueo % VEINTICUATRO_HORAS;
+			
+			if(horas==0) {
+				dias = horasDeParqueo / VEINTICUATRO_HORAS;
+				
+			} else {				
+				dias = (horasDeParqueo - horas) / VEINTICUATRO_HORAS;	
+				
+				if(horas>=LIMITE_COBRO_POR_HORAS) {
+					dias++;
+					horas = 0;
+				} 
+			}
+		}
+		tiempoTranscurrido.setDias(dias);
+		tiempoTranscurrido.setHoras(horas);
+		return tiempoTranscurrido;
+	}
 }
