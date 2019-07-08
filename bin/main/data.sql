@@ -1,0 +1,10 @@
+DROP TABLE IF EXISTS ticket;
+
+CREATE TABLE ticket(
+	id BIGINT AUTO_INCREMENT PRIMARY KEY,
+	plate VARCHAR(6)	NOT NULL,
+	inTime TIMESTAMP NOT NULL,
+	outTime TIMESTAMP,
+	vehicleType VARCHAR(5)	NOT NULL,
+	displacement INT
+);

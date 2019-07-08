@@ -1,8 +1,11 @@
 package ceiba.com.co.parqueadero.comando.dominio.repositorio;
 
+import org.springframework.stereotype.Repository;
+
 import ceiba.com.co.parqueadero.comando.dominio.entidad.Ticket;
 
-public interface TicketRepository {
+@Repository
+public interface ITicketRepository {
 
 	/**
 	 * Permite crear un ticket
@@ -25,5 +28,9 @@ public interface TicketRepository {
 	 * @param plate
 	 * @return si existe o no
 	 */
-	boolean exists(String plate);
+	boolean existeVehiculoEnParqueadero(String plate);
+	
+	Ticket buscarPorId(Long id);
+	
+	Ticket buscarPorPlacaSinSalida(String plate);
 }

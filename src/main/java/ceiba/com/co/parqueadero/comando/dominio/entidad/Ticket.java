@@ -1,6 +1,6 @@
 package ceiba.com.co.parqueadero.comando.dominio.entidad;
 
-import java.time.LocalDateTime;
+import java.util.Date;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -15,10 +15,11 @@ public class Ticket {
 
 	private Long id;
 	private String plate;
-	private LocalDateTime inTime;
-	private LocalDateTime outTime;
+	private Date inTime;
+	private Date outTime;
 	private String vehicleType;
-	private int displacement;
+	private Integer displacement;
+	private Integer totalAPagar;
 
 	private static final String PLACA_VACIA = "Debes ingresar la placa";
 	private static final String TIPO_VEHICULO_VACIO = "Debes elegir el tipo de vehículo";
@@ -29,7 +30,7 @@ public class Ticket {
 	public Ticket(String plate, String vehicleType, int displacement) {
 		RequiredValidator.validateStringRequired(plate, PLACA_VACIA);
 		RequiredValidator.validateStringRequired(vehicleType, TIPO_VEHICULO_VACIO);
-		RequiredValidator.validateVehicleRequired(plate, TIPO_VEHICULO_INVALIDO);
+		RequiredValidator.validateVehicleRequired(vehicleType, TIPO_VEHICULO_INVALIDO);
 
 		if (vehicleType.equals(MOTO)) {
 			RequiredValidator.validateObjectRequired(displacement, CILINDRAJE_MOTO_VACIO);
@@ -39,4 +40,7 @@ public class Ticket {
 		this.displacement = displacement;
 	}
 
+	public void calcularPrecioAPagar() {
+		
+	}
 }
