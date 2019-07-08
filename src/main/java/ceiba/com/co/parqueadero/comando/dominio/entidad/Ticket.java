@@ -1,6 +1,7 @@
 package ceiba.com.co.parqueadero.comando.dominio.entidad;
 
-import java.util.Date;
+import java.time.Duration;
+import java.time.LocalDateTime;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -11,36 +12,40 @@ import lombok.Setter;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class Ticket {
+public abstract class Ticket {
 
 	private Long id;
-	private String plate;
-	private Date inTime;
-	private Date outTime;
-	private String vehicleType;
-	private Integer displacement;
+	private String placa;
+	private LocalDateTime horaDeEntrada;
+	private LocalDateTime horaDeSalida;
+	private String tipoDeVehiculo;
 	private Integer totalAPagar;
+
+	private static final double SEGUNDOS_EN_UNA_HORA = 3600d;
+	private static final int VEINTICUATRO_HORAS = 24;
+	protected static final int LIMITE_COBRO_POR_HORAS = 9;
+	
+	public static final String MOTO = "MOTO";
+	public static final String CARRO = "CARRO";
 
 	private static final String PLACA_VACIA = "Debes ingresar la placa";
 	private static final String TIPO_VEHICULO_VACIO = "Debes elegir el tipo de vehículo";
 	private static final String TIPO_VEHICULO_INVALIDO = "Debes elegir un tipo de vehículo válido";
-	private static final String CILINDRAJE_MOTO_VACIO = "Debes ingresar el cilindraje de la moto";
-	private static final String MOTO = "MOTO";
 
-	public Ticket(String plate, String vehicleType, int displacement) {
-		RequiredValidator.validateStringRequired(plate, PLACA_VACIA);
-		RequiredValidator.validateStringRequired(vehicleType, TIPO_VEHICULO_VACIO);
-		RequiredValidator.validateVehicleRequired(vehicleType, TIPO_VEHICULO_INVALIDO);
-
-		if (vehicleType.equals(MOTO)) {
-			RequiredValidator.validateObjectRequired(displacement, CILINDRAJE_MOTO_VACIO);
-		}
-		this.plate = plate;
-		this.vehicleType = vehicleType;
-		this.displacement = displacement;
+	public Ticket(String placa, String tipoDeVehiculo) {
+		RequiredValidator.validateStringRequired(placa, PLACA_VACIA);
+		RequiredValidator.validateStringRequired(tipoDeVehiculo, TIPO_VEHICULO_VACIO);
+		RequiredValidator.validateVehicleRequired(tipoDeVehiculo, TIPO_VEHICULO_INVALIDO);
+		this.placa = placa;
+		this.tipoDeVehiculo = tipoDeVehiculo;
 	}
 
-	public void calcularPrecioAPagar() {
-		
+	public abstract void calcularPrecioAPagar();
+
+	int calcularHorasDeParqueo() {
+		Duration duracion = Duration.between(this.getHoraDeEntrada(), this.getHoraDeSalida());
+		long segundos = duracion.getSeconds();
+		return (int) Math.ceil((double) segundos / SEGUNDOS_EN_UNA_HORA);
 	}
+	
 }

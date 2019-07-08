@@ -1,6 +1,6 @@
  package ceiba.com.co.parqueadero.comando.infraestructura.persistencia.entidad;
 
-import java.util.Date;
+import java.time.LocalDateTime;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -26,18 +26,18 @@ public class TicketEntity {
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	@Column(name = "id")
 	private Long id;
-	@Column(name = "plate", nullable = false, length = 6)
-	private String plate;
-	@Column(name = "inTime", nullable = false)
+	@Column(name = "placa", nullable = false, length = 6)
+	private String placa;
+	@Column(name = "horaDeEntrada", nullable = false)
 	@Temporal(TemporalType.TIMESTAMP)
-	private Date inTime;
-	@Column(name = "outTime", nullable = true)
+	private LocalDateTime horaDeEntrada;
+	@Column(name = "horaDeSalida", nullable = true)
 	@Temporal(TemporalType.TIMESTAMP)
-	private Date outTime;
-	@Column(name = "vehicleType", nullable = false, length = 5)
-	private String vehicleType;
-	@Column(name = "displacement", nullable = true)
-	private int displacement;
+	private LocalDateTime horaDeSalida;
+	@Column(name = "tipoDeVehiculo", nullable = false, length = 5)
+	private String tipoDeVehiculo;
+	@Column(name = "cilindraje", nullable = true)
+	private Integer cilindraje;
 	@Column(name = "totalAPagar", nullable = false)
 	private int totalAPagar;
 }

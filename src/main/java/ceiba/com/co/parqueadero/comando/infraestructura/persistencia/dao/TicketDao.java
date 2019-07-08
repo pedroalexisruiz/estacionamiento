@@ -40,4 +40,9 @@ public class TicketDao implements ITicketRepository {
 	public Ticket buscarPorPlacaSinSalida(String plate) {
 		return builder.convertToDomain(dao.buscarPorPlacaSinSalida(plate));
 	}
+	
+	@Override
+	public Long contarVehiculosParqueadosPorTipo(String tipoDeVehiculo) {
+		return dao.contarVehiculosParqueadosPorTipo(tipoDeVehiculo);
+	}
 }

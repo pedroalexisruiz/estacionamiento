@@ -33,4 +33,6 @@ public interface ITicketRepository {
 	Ticket buscarPorId(Long id);
 	
 	Ticket buscarPorPlacaSinSalida(String plate);
+	
+	Long contarVehiculosParqueadosPorTipo(String tipoDeVehiculo);
 }

@@ -1,6 +1,6 @@
 package ceiba.com.co.parqueadero.comando.infraestructura.controladores;
 
-import java.util.Date;
+import java.time.LocalDateTime;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -37,7 +37,7 @@ public class TicketCommandController {
 
 	@PutMapping
 	// @ApiOperation("Crear Usuario")
-	public CommandResponse<Date> registrarSalida(@RequestBody TicketCommand ticketCommand) {
+	public CommandResponse<LocalDateTime> registrarSalida(@RequestBody TicketCommand ticketCommand) {
 		return updateVehicleExitHandler.execute(ticketCommand);
 	}
 }
