@@ -23,7 +23,7 @@ public class UpdateVehicleExitHandler implements CommandResponseHandler<TicketCo
 	@Override
 	public CommandResponse<LocalDateTime> execute(TicketCommand ticketCommand) {
 		Ticket ticket = this.ticketFactory.create(ticketCommand);
-		return new CommandResponse<LocalDateTime>(this.createTicketService.updateVehicleExit(ticket.getPlaca()).getHoraDeSalida());
+		return new CommandResponse<LocalDateTime>(this.createTicketService.registrarSalidaDelVehiculo(ticket.getPlaca()).getHoraDeSalida());
 	}
 
 }

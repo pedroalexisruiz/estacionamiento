@@ -4,5 +4,5 @@ import ceiba.com.co.parqueadero.comando.dominio.entidad.Ticket;
 
 public interface IUpdateVehicleExitService {
 
-	public Ticket updateVehicleExit(String plate);
+	public Ticket registrarSalidaDelVehiculo(String plate);
 }

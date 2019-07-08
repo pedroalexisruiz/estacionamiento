@@ -34,7 +34,7 @@ public class Vigilante implements ICreateTicketService, IUpdateVehicleExitServic
 		this.ticketRepository = ticketRepository;
 	}
 
-	public Long registerVehicle(Ticket ticket) {
+	public Long registrarEntradaDeVehiculo(Ticket ticket) {
 		verificarPlacasRestringidas(ticket.getPlaca());
 		verificarDisponibilidad(ticket.getTipoDeVehiculo());
 		verificarVehiculoDentro(ticket);
@@ -92,12 +92,13 @@ public class Vigilante implements ICreateTicketService, IUpdateVehicleExitServic
 	}
 
 	@Override
-	public Ticket updateVehicleExit(String plate) {
+	public Ticket registrarSalidaDelVehiculo(String plate) {
 		Ticket ticket = this.ticketRepository.buscarPorPlacaSinSalida(plate);
 		if (ticket == null) {
 			throw new VehicleDoubleEntryException(EL_VEHICULO_NO_SE_ENCUENTRA_EN_EL_PARQUEADERO);
 		}
 		ticket.setHoraDeSalida(LocalDateTime.now());
+		ticket.calcularPrecioAPagar();
 		this.ticketRepository.update(ticket);
 		return ticket;
 	}

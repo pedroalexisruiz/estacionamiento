@@ -4,5 +4,5 @@ import ceiba.com.co.parqueadero.comando.dominio.entidad.Ticket;
 
 public interface ICreateTicketService {
 
-	public Long registerVehicle(Ticket ticket);
+	public Long registrarEntradaDeVehiculo(Ticket ticket);
 }

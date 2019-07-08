@@ -19,7 +19,7 @@ import lombok.Setter;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-@Entity(name = "ticket")
+@Entity(name = "Ticket")
 public class TicketEntity {
 	
 	@Id
@@ -29,10 +29,8 @@ public class TicketEntity {
 	@Column(name = "placa", nullable = false, length = 6)
 	private String placa;
 	@Column(name = "horaDeEntrada", nullable = false)
-	@Temporal(TemporalType.TIMESTAMP)
 	private LocalDateTime horaDeEntrada;
 	@Column(name = "horaDeSalida", nullable = true)
-	@Temporal(TemporalType.TIMESTAMP)
 	private LocalDateTime horaDeSalida;
 	@Column(name = "tipoDeVehiculo", nullable = false, length = 5)
 	private String tipoDeVehiculo;
