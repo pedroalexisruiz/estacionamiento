@@ -16,6 +16,7 @@ import org.springframework.test.context.jdbc.Sql;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import ceiba.com.co.parqueadero.comando.aplicacion.entidad.TicketCommand;
+import ceiba.com.co.parqueadero.comando.dominio.entidad.Ticket;
 import ceiba.com.co.parqueadero.comando.dominio.entidad.Vigilante;
 import ceiba.com.co.parqueadero.comando.dominio.excepcion.ParqueaderoSinEspacioException;
 import ceiba.com.co.parqueadero.comando.dominio.excepcion.VehicleDoubleEntryException;
@@ -62,6 +63,35 @@ public class TicketCommandControllerIntegrationTest {
 	}
 
 	@Test
+	public void ingresarMoto() {
+		// arrange
+		ticketCommand = new TicketCommandBuilder().conPlaca("PED123").conCilindraje(250).conTipoDeVehiculo(Ticket.MOTO)
+				.build();
+		boolean vehiculoGuardado = false;
+
+		// act
+		controlador.crear(ticketCommand);
+
+		// assert
+
+		vehiculoGuardado = dao.existeVehiculoEnParqueadero(ticketCommand.getPlaca());
+		assertTrue(vehiculoGuardado);
+	}
+
+	@Test
+	public void sacarCarroNoRegistrado() {
+		// arrange
+		ticketCommand = new TicketCommandBuilder().conPlaca("PED123").build();
+		try {
+			// act
+			controlador.registrarSalida(ticketCommand);
+		} catch (VehicleDoubleEntryException e) {
+			// assert
+			assertEquals(Vigilante.EL_VEHICULO_NO_SE_ENCUENTRA_EN_EL_PARQUEADERO, e.getMessage());
+		}
+	}
+
+	@Test
 	public void registrarSalida() {
 		// arrange
 		ticketCommand = new TicketCommandBuilder().conPlaca("PED123").build();
@@ -81,7 +111,7 @@ public class TicketCommandControllerIntegrationTest {
 	public void ingresarCarroYaIngresado() {
 		// arrange
 		ticketCommand = new TicketCommandBuilder().conPlaca("PED123").build();
-		
+
 		controlador.crear(ticketCommand);
 
 		// act

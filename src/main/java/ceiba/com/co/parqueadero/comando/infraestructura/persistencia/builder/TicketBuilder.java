@@ -11,6 +11,9 @@ import ceiba.com.co.parqueadero.comando.infraestructura.persistencia.entidad.Tic
 public class TicketBuilder {
 
 	public TicketEntity convertToEntity(Ticket ticket) {
+		if(ticket == null) {
+			return null;
+		}
 		if (ticket instanceof TicketMoto) {
 			return new TicketEntity(ticket.getId(), ticket.getPlaca(), ticket.getHoraDeEntrada(),
 					ticket.getHoraDeSalida(), ticket.getTipoDeVehiculo(), ((TicketMoto) ticket).getCilindraje(),
@@ -21,6 +24,9 @@ public class TicketBuilder {
 	}
 
 	public Ticket convertToDomain(TicketEntity ticketEntity) {
+		if(ticketEntity == null) {
+			return null;
+		}
 		if (ticketEntity.getTipoDeVehiculo().equals(Ticket.MOTO)) {
 			new TicketMoto(ticketEntity.getId(), ticketEntity.getPlaca(), ticketEntity.getHoraDeEntrada(),
 					ticketEntity.getHoraDeSalida(), ticketEntity.getTipoDeVehiculo(), ticketEntity.getTotalAPagar(),
