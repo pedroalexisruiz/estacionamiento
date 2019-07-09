@@ -9,6 +9,10 @@ public class RequiredValidator {
 	private static final String VACIO = "";
 	private static final String MOTO = "MOTO";
 	private static final String CARRO = "CARRO";
+	
+	private RequiredValidator() {
+		
+	}
 
 	public static void validateStringRequired(String text, String errorMessage) {
 		if (text == null || text.equals(RequiredValidator.VACIO)) {

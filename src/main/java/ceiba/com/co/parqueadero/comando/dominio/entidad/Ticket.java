@@ -1,6 +1,5 @@
 package ceiba.com.co.parqueadero.comando.dominio.entidad;
 
-import java.math.BigDecimal;
 import java.time.Duration;
 import java.time.LocalDateTime;
 

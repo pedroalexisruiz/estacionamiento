@@ -21,7 +21,7 @@ public class CreateTicketHandler implements CommandResponseHandler<TicketCommand
 	@Override
 	public CommandResponse<Long> execute(TicketCommand ticketCommand) {
 		Ticket ticket = this.ticketFactory.create(ticketCommand);
-		return new CommandResponse<Long>(this.createTicketService.registrarEntradaDeVehiculo(ticket));
+		return new CommandResponse<>(this.createTicketService.registrarEntradaDeVehiculo(ticket));
 	}
 
 }
