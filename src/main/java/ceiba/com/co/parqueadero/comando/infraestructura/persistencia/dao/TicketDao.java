@@ -45,4 +45,9 @@ public class TicketDao implements ITicketRepository {
 	public Long contarVehiculosParqueadosPorTipo(String tipoDeVehiculo) {
 		return dao.countByTipoDeVehiculoAndHoraDeSalidaIsNull(tipoDeVehiculo);
 	}
+	
+	@Override
+	public void borrarTodos() {
+		dao.deleteAll();
+	}
 }

@@ -35,4 +35,6 @@ public interface ITicketRepository {
 	Ticket buscarPorPlacaSinSalida(String plate);
 	
 	Long contarVehiculosParqueadosPorTipo(String tipoDeVehiculo);
+	
+	void borrarTodos();
 }

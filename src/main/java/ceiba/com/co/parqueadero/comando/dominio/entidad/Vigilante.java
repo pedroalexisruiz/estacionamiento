@@ -22,9 +22,9 @@ public class Vigilante implements ICreateTicketService, IUpdateVehicleExitServic
 	private static final char PRIMERA_LETRA_PLACA_NO_VALIDA = 'A';
 	public static final String DIA_NO_HABIL = "No se permite el ingreso del vehiculo en día no habil";
 
-	private static final String EL_VEHICULO_SE_ENCUENTRA_EN_EL_PARQUEADERO = "El vehículo ya se encuentra en el parqueadero.";
-	private static final String EL_VEHICULO_NO_SE_ENCUENTRA_EN_EL_PARQUEADERO = "El vehículo no se encuentra en el parqueadero.";
-	private static final String NO_HAY_ESPACIOS_DISPONIBLES = "No hay espacios disponibles en el parqueadero.";
+	public static final String EL_VEHICULO_SE_ENCUENTRA_EN_EL_PARQUEADERO = "El vehículo ya se encuentra en el parqueadero.";
+	public static final String EL_VEHICULO_NO_SE_ENCUENTRA_EN_EL_PARQUEADERO = "El vehículo no se encuentra en el parqueadero.";
+	public static final String NO_HAY_ESPACIOS_DISPONIBLES = "No hay espacios disponibles en el parqueadero.";
 
 	private final ITicketRepository ticketRepository;
 	@Autowired

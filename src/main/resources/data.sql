@@ -2,9 +2,10 @@ DROP TABLE IF EXISTS ticket;
 
 CREATE TABLE ticket(
 	id BIGINT AUTO_INCREMENT PRIMARY KEY,
-	plate VARCHAR(6)	NOT NULL,
-	inTime TIMESTAMP NOT NULL,
-	outTime TIMESTAMP,
-	vehicleType VARCHAR(5)	NOT NULL,
-	displacement INT
+	placa VARCHAR(6)	NOT NULL,
+	horaDeEntrada TIMESTAMP NOT NULL,
+	horaDeSalida TIMESTAMP,
+	tipoDeVehiculo VARCHAR(5)	NOT NULL,
+	cilindraje INT,
+	totalAPagar BIGINT
 );

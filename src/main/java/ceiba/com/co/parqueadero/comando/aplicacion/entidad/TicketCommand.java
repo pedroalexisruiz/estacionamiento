@@ -10,7 +10,7 @@ import lombok.Setter;
 @NoArgsConstructor
 @AllArgsConstructor
 public class TicketCommand {
-	private String plate;
-	private String vehicleType;
-	private int displacement;
+	private String placa;
+	private String tipoDeVehiculo;
+	private int cilindraje;
 }

@@ -1,7 +1,6 @@
 package ceiba.com.co.parqueadero.comando.dominio.unitarias;
 
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 import static org.mockito.Mockito.doReturn;
 import static org.mockito.Mockito.when;
@@ -19,10 +18,8 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Spy;
 import org.mockito.junit.MockitoJUnitRunner;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.TestPropertySource;
-import org.springframework.test.context.junit4.SpringRunner;
 
 import ceiba.com.co.parqueadero.comando.dominio.entidad.Ticket;
 import ceiba.com.co.parqueadero.comando.dominio.entidad.Vigilante;
@@ -44,7 +41,7 @@ public class TestVigilante {
 
 	@Before
 	public void setUp() {
-
+		//
 	}
 
 	@Test
@@ -82,7 +79,7 @@ public class TestVigilante {
 
 		Calendar fechaActual = Calendar.getInstance();
 		fechaActual.setTime(Date.from(fechaIngreso.atZone(ZoneId.systemDefault()).toInstant()));
-		System.out.println(fechaActual.getTime());
+
 		when(generadorDeFecha.obtenerFechaActual()).thenReturn(fechaActual);
 		// act
 		try {
