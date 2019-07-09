@@ -4,7 +4,7 @@ import ceiba.com.co.parqueadero.comando.dominio.excepcion.ObjectRequiredExceptio
 import ceiba.com.co.parqueadero.comando.dominio.excepcion.StringRequiredException;
 import ceiba.com.co.parqueadero.comando.dominio.excepcion.VehicleRequiredException;
 
-public class RequiredValidator {
+public final class RequiredValidator {
 
 	private static final String VACIO = "";
 	private static final String MOTO = "MOTO";
