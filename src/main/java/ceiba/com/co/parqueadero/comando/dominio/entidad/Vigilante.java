@@ -1,10 +1,11 @@
 package ceiba.com.co.parqueadero.comando.dominio.entidad;
 
-import java.time.LocalDateTime;
 import java.util.Calendar;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import ceiba.com.co.parqueadero.comando.dominio.entidad.util.GeneradorDeFecha;
 import ceiba.com.co.parqueadero.comando.dominio.excepcion.DiaNoHabilException;
 import ceiba.com.co.parqueadero.comando.dominio.excepcion.ParqueaderoSinEspacioException;
 import ceiba.com.co.parqueadero.comando.dominio.excepcion.VehicleDoubleEntryException;
@@ -19,33 +20,34 @@ public class Vigilante implements ICreateTicketService, IUpdateVehicleExitServic
 	private static final int NUMERO_MAXIMO_MOTOS = 10;
 
 	private static final char PRIMERA_LETRA_PLACA_NO_VALIDA = 'A';
-	private static final String DIA_NO_HABIL = "No se permite el ingreso del vehiculo en día no habil";
+	public static final String DIA_NO_HABIL = "No se permite el ingreso del vehiculo en día no habil";
 
-	private static final String EL_VEHICULO_SE_ENCUENTRA_EN_EL_PARQUEADERO = "El vehículo ya se encuentra"
-			+ " en el parqueadero.";
-	private static final String EL_VEHICULO_NO_SE_ENCUENTRA_EN_EL_PARQUEADERO = "El vehículo no se encuentra"
-			+ " en el parqueadero.";
-	private static final String NO_HAY_ESPACIOS_DISPONIBLES = "No hay espacios disponibles" + " en el parqueadero.";
+	private static final String EL_VEHICULO_SE_ENCUENTRA_EN_EL_PARQUEADERO = "El vehículo ya se encuentra en el parqueadero.";
+	private static final String EL_VEHICULO_NO_SE_ENCUENTRA_EN_EL_PARQUEADERO = "El vehículo no se encuentra en el parqueadero.";
+	private static final String NO_HAY_ESPACIOS_DISPONIBLES = "No hay espacios disponibles en el parqueadero.";
 
 	private final ITicketRepository ticketRepository;
+	@Autowired
+	private final GeneradorDeFecha generadorDeFecha;
 
-	public Vigilante(ITicketRepository ticketRepository) {
+	public Vigilante(ITicketRepository ticketRepository, GeneradorDeFecha generadorDeFecha) {
 		super();
 		this.ticketRepository = ticketRepository;
+		this.generadorDeFecha = generadorDeFecha;
 	}
 
 	public Long registrarEntradaDeVehiculo(Ticket ticket) {
 		verificarPlacasRestringidas(ticket.getPlaca());
 		verificarDisponibilidad(ticket.getTipoDeVehiculo());
 		verificarVehiculoDentro(ticket);
-		ticket.setHoraDeEntrada(LocalDateTime.now());
+		ticket.setHoraDeEntrada(generadorDeFecha.obtenerHoraLocalActual());
 
-		return this.ticketRepository.create(ticket);
+		return registrarEntrada(ticket);
 	}
 
 	public void verificarPlacasRestringidas(String placa) {
 		char primeraLetra = placa.charAt(0);
-		Calendar calendario = Calendar.getInstance();
+		Calendar calendario = generadorDeFecha.obtenerFechaActual();
 
 		if (primeraLetra == PRIMERA_LETRA_PLACA_NO_VALIDA && !esDiaHabil(calendario.get(Calendar.DAY_OF_WEEK))) {
 			throw new DiaNoHabilException(DIA_NO_HABIL);
@@ -54,11 +56,11 @@ public class Vigilante implements ICreateTicketService, IUpdateVehicleExitServic
 	}
 
 	private boolean esDiaHabil(int dia) {
-		return dia == Calendar.MONDAY || dia == Calendar.SUNDAY;
+		return dia != Calendar.MONDAY && dia != Calendar.SUNDAY;
 	}
 
 	public void verificarDisponibilidad(String tipoDeVehiculo) {
-		long cantidadOcupada = this.ticketRepository.contarVehiculosParqueadosPorTipo(tipoDeVehiculo);
+		long cantidadOcupada = contarVehiculosParqueadosPorTipo(tipoDeVehiculo);
 
 		switch (tipoDeVehiculo) {
 		case Ticket.MOTO:
@@ -70,6 +72,15 @@ public class Vigilante implements ICreateTicketService, IUpdateVehicleExitServic
 		default:
 			break;
 		}
+	}
+	
+	public long registrarEntrada(Ticket ticket) {
+		return this.ticketRepository.create(ticket);
+	}
+	
+	public long contarVehiculosParqueadosPorTipo(String tipoDeVehiculo) {
+		Long cantidad = this.ticketRepository.contarVehiculosParqueadosPorTipo(tipoDeVehiculo);
+		return cantidad == null? 0: cantidad.longValue();
 	}
 
 	private void verificarDisponibilidadDeMotos(long cantidadOcupada) {
@@ -85,10 +96,14 @@ public class Vigilante implements ICreateTicketService, IUpdateVehicleExitServic
 	}
 
 	private void verificarVehiculoDentro(Ticket ticket) {
-		boolean exists = this.ticketRepository.existeVehiculoEnParqueadero(ticket.getPlaca());
+		boolean exists = existeVehiculoEnParqueadero(ticket.getPlaca());
 		if (exists) {
 			throw new VehicleDoubleEntryException(EL_VEHICULO_SE_ENCUENTRA_EN_EL_PARQUEADERO);
 		}
+	}
+	
+	public boolean existeVehiculoEnParqueadero(String placa) {
+		return this.ticketRepository.existeVehiculoEnParqueadero(placa);
 	}
 
 	@Override
@@ -97,7 +112,7 @@ public class Vigilante implements ICreateTicketService, IUpdateVehicleExitServic
 		if (ticket == null) {
 			throw new VehicleDoubleEntryException(EL_VEHICULO_NO_SE_ENCUENTRA_EN_EL_PARQUEADERO);
 		}
-		ticket.setHoraDeSalida(LocalDateTime.now());
+		ticket.setHoraDeSalida(generadorDeFecha.obtenerHoraLocalActual());
 		ticket.calcularPrecioAPagar();
 		this.ticketRepository.update(ticket);
 		return ticket;

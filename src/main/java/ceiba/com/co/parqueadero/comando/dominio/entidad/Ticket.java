@@ -21,7 +21,7 @@ public abstract class Ticket {
 	private LocalDateTime horaDeEntrada;
 	private LocalDateTime horaDeSalida;
 	private String tipoDeVehiculo;
-	private Long totalAPagar;
+	private long totalAPagar;
 
 	private static final double SEGUNDOS_EN_UNA_HORA = 3600d;
 	private static final int VEINTICUATRO_HORAS = 24;
@@ -40,6 +40,7 @@ public abstract class Ticket {
 		RequiredValidator.validateVehicleRequired(tipoDeVehiculo, TIPO_VEHICULO_INVALIDO);
 		this.placa = placa;
 		this.tipoDeVehiculo = tipoDeVehiculo;
+		this.totalAPagar = 0;
 	}
 
 	public abstract void calcularPrecioAPagar();

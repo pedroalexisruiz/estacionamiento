@@ -43,6 +43,6 @@ public class TicketDao implements ITicketRepository {
 	
 	@Override
 	public Long contarVehiculosParqueadosPorTipo(String tipoDeVehiculo) {
-		return dao.contarVehiculosParqueadosPorTipo(tipoDeVehiculo);
+		return dao.countByTipoDeVehiculoAndHoraDeSalidaIsNull(tipoDeVehiculo);
 	}
 }

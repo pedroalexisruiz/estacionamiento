@@ -19,6 +19,6 @@ public interface ITicketDao extends JpaRepository<TicketEntity, Long> {
 	@Query(value="select t from Ticket t where t.placa=?1 and t.horaDeSalida IS null")
 	TicketEntity buscarPorPlacaSinSalida(String placa);
 	
-	@Query("SELECT COUNT(t) FROM Ticket t WHERE t.tipoDeVehiculo=?1 and t.horaDeSalida IS null")
-    Long contarVehiculosParqueadosPorTipo(String tipoDeVehiculo);
+	//@Query(nativeQuery = true, value="select count(1) from ticket t where t.tipoDeVehiculo=?1 and t.horaDeSalida IS null")
+    Long countByTipoDeVehiculoAndHoraDeSalidaIsNull(String tipoDeVehiculo);
 }
