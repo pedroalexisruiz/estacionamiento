@@ -1,5 +1,7 @@
 package ceiba.com.co.parqueadero.comando.infraestructura.persistencia.dao;
 
+import java.util.Optional;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
@@ -7,6 +9,7 @@ import ceiba.com.co.parqueadero.comando.dominio.entidad.Ticket;
 import ceiba.com.co.parqueadero.comando.dominio.repositorio.ITicketRepository;
 import ceiba.com.co.parqueadero.comando.infraestructura.persistencia.builder.TicketBuilder;
 import ceiba.com.co.parqueadero.comando.infraestructura.persistencia.dao.implejpa.ITicketDao;
+import ceiba.com.co.parqueadero.comando.infraestructura.persistencia.entidad.TicketEntity;
 
 @Repository
 public class TicketDao implements ITicketRepository {
@@ -33,7 +36,8 @@ public class TicketDao implements ITicketRepository {
 
 	@Override
 	public Ticket buscarPorId(Long id) {
-		return builder.convertToDomain(dao.findById(id).get());
+		Optional<TicketEntity> ticket = dao.findById(id);
+		return builder.convertToDomain(ticket.orElse(null));
 	}
 
 	@Override
