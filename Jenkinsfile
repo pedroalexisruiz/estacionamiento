@@ -43,7 +43,7 @@ pipeline{
 						steps{
 							echo "------------>Compilación backend<------------"
 							dir("${PROJECT_PATH_BACK}"){
-								sh 'gradle build -x test'
+								sh 'gradle --b ./build.gradle build -x test'
 							}
 						}
 					
@@ -56,7 +56,7 @@ pipeline{
 						steps {
 							echo '------------>test backend<------------'
 							dir("${PROJECT_PATH_BACK}"){
-								sh 'gradle --stacktrace test'
+								sh 'gradle --b ./build.gradle test'
 								
 							}
 						}

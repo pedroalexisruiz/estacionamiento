@@ -28,7 +28,7 @@ import ceiba.com.co.parqueadero.comando.testdatabuilder.TicketCommandBuilder;
 @RunWith(SpringRunner.class)
 @TestPropertySource(locations = "classpath:application-test.properties")
 public class TicketCommandControllerIntegrationTest {
-
+//mockMVC
 	@Autowired
 	TicketCommandController controlador;
 

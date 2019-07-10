@@ -11,6 +11,7 @@ import ceiba.com.co.parqueadero.comando.infraestructura.persistencia.builder.Tic
 import ceiba.com.co.parqueadero.comando.infraestructura.persistencia.dao.implejpa.ITicketDao;
 import ceiba.com.co.parqueadero.comando.infraestructura.persistencia.entidad.TicketEntity;
 
+//TicketRepositoryH2
 @Repository
 public class TicketDao implements ITicketRepository {
 
