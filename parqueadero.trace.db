@@ -1988,3 +1988,6 @@ Caused by: java.nio.channels.OverlappingFileLockException
 	at java.nio.channels.FileChannel.tryLock(Unknown Source)
 	at org.h2.mvstore.FileStore.open(FileStore.java:163)
 	... 28 more
+2019-07-10 08:47:23 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLDataException: Value too long for column """PLACA"" VARCHAR(6) NOT NULL": "'ALGO123' (7)"; SQL statement:
+insert into Ticket (cilindraje, horaDeEntrada, horaDeSalida, placa, tipoDeVehiculo, totalAPagar, id) values (?, ?, ?, ?, ?, ?, ?) [22001-199]

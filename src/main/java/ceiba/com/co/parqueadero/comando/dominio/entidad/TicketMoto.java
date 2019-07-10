@@ -9,7 +9,7 @@ import lombok.Setter;
 @Setter
 public class TicketMoto extends Ticket {
 
-	private int cilindraje;
+	private Integer cilindraje;
 
 	private static final String CILINDRAJE_MOTO_VACIO = "Debes ingresar el cilindraje de la moto";
 	public static final Long VALOR_HORA = 500L;

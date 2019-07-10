@@ -12,5 +12,5 @@ import lombok.Setter;
 public class TicketCommand {
 	private String placa;
 	private String tipoDeVehiculo;
-	private int cilindraje;
+	private Integer cilindraje;
 }
