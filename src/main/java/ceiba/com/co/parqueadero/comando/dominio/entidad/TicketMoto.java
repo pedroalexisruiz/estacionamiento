@@ -2,6 +2,7 @@ package ceiba.com.co.parqueadero.comando.dominio.entidad;
 
 import java.time.LocalDateTime;
 
+import ceiba.com.co.parqueadero.comando.dominio.entidad.util.ValidadorRequeridos;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -35,21 +36,21 @@ public class TicketMoto extends Ticket {
 
 	public TicketMoto(String plate, String vehicleType, Integer cilindraje) {
 		super(plate, vehicleType);
-		RequiredValidator.validateObjectRequired(cilindraje, CILINDRAJE_MOTO_VACIO);
+		ValidadorRequeridos.validarObjetoNoNulo(cilindraje, CILINDRAJE_MOTO_VACIO);
 		this.cilindraje = cilindraje;
 	}
 
 	public TicketMoto(String placa, LocalDateTime horaDeEntrada, LocalDateTime horaDeSalida,
 			String tipoDeVehiculo, Integer cilindraje) {
 		super(null, placa, horaDeEntrada, horaDeSalida, tipoDeVehiculo, 0);
-		RequiredValidator.validateObjectRequired(cilindraje, CILINDRAJE_MOTO_VACIO);
+		ValidadorRequeridos.validarObjetoNoNulo(cilindraje, CILINDRAJE_MOTO_VACIO);
 		this.cilindraje = cilindraje;
 	}
 	
 	public TicketMoto(Long id, String placa, LocalDateTime horaDeEntrada, LocalDateTime horaDeSalida,
 			String tipoDeVehiculo, Long totalAPagar, Integer cilindraje) {
 		super(id, placa, horaDeEntrada, horaDeSalida, tipoDeVehiculo, totalAPagar);
-		RequiredValidator.validateObjectRequired(cilindraje, CILINDRAJE_MOTO_VACIO);
+		ValidadorRequeridos.validarObjetoNoNulo(cilindraje, CILINDRAJE_MOTO_VACIO);
 		this.cilindraje = cilindraje;
 	}
 

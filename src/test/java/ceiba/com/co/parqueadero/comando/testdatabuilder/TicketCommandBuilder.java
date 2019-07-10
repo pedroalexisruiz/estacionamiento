@@ -1,6 +1,6 @@
 package ceiba.com.co.parqueadero.comando.testdatabuilder;
 
-import ceiba.com.co.parqueadero.comando.aplicacion.entidad.TicketCommand;
+import ceiba.com.co.parqueadero.comando.aplicacion.entidad.ComandoTicket;
 
 public class TicketCommandBuilder {
 
@@ -33,7 +33,7 @@ public class TicketCommandBuilder {
 		return this;
 	}
 
-	public TicketCommand build() {
-		return new TicketCommand(this.placa, this.tipoDeVehiculo, this.cilindraje);
+	public ComandoTicket build() {
+		return new ComandoTicket(this.placa, this.tipoDeVehiculo, this.cilindraje);
 	}
 }

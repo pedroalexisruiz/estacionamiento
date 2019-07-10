@@ -4,6 +4,7 @@ import java.time.Duration;
 import java.time.LocalDateTime;
 
 import ceiba.com.co.parqueadero.comando.dominio.entidad.util.TiempoTranscurrido;
+import ceiba.com.co.parqueadero.comando.dominio.entidad.util.ValidadorRequeridos;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -34,9 +35,9 @@ public abstract class Ticket {
 	private static final String TIPO_VEHICULO_INVALIDO = "Debes elegir un tipo de vehículo válido";
 
 	public Ticket(String placa, String tipoDeVehiculo) {
-		RequiredValidator.validateStringRequired(placa, PLACA_VACIA);
-		RequiredValidator.validateStringRequired(tipoDeVehiculo, TIPO_VEHICULO_VACIO);
-		RequiredValidator.validateVehicleRequired(tipoDeVehiculo, TIPO_VEHICULO_INVALIDO);
+		ValidadorRequeridos.validarStringNoNuloOVacio(placa, PLACA_VACIA);
+		ValidadorRequeridos.validarStringNoNuloOVacio(tipoDeVehiculo, TIPO_VEHICULO_VACIO);
+		ValidadorRequeridos.validarTipoDeVehiculo(tipoDeVehiculo, TIPO_VEHICULO_INVALIDO);
 		this.placa = placa;
 		this.tipoDeVehiculo = tipoDeVehiculo;
 		this.totalAPagar = 0;

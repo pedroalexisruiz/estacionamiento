@@ -5,34 +5,34 @@ import org.springframework.stereotype.Component;
 import ceiba.com.co.parqueadero.comando.dominio.entidad.Ticket;
 import ceiba.com.co.parqueadero.comando.dominio.entidad.TicketCarro;
 import ceiba.com.co.parqueadero.comando.dominio.entidad.TicketMoto;
-import ceiba.com.co.parqueadero.comando.infraestructura.persistencia.entidad.TicketEntity;
+import ceiba.com.co.parqueadero.comando.infraestructura.persistencia.entidad.EntidadTicket;
 
 @Component
 public class TicketBuilder {
 
-	public TicketEntity convertToEntity(Ticket ticket) {
+	public EntidadTicket convertirAEntidad(Ticket ticket) {
 		if(ticket == null) {
 			return null;
 		}
 		if (ticket instanceof TicketMoto) {
-			return new TicketEntity(ticket.getId(), ticket.getPlaca(), ticket.getHoraDeEntrada(),
+			return new EntidadTicket(ticket.getId(), ticket.getPlaca(), ticket.getHoraDeEntrada(),
 					ticket.getHoraDeSalida(), ticket.getTipoDeVehiculo(), ((TicketMoto) ticket).getCilindraje(),
 					ticket.getTotalAPagar());
 		}
-		return new TicketEntity(ticket.getId(), ticket.getPlaca(), ticket.getHoraDeEntrada(), ticket.getHoraDeSalida(),
+		return new EntidadTicket(ticket.getId(), ticket.getPlaca(), ticket.getHoraDeEntrada(), ticket.getHoraDeSalida(),
 				ticket.getTipoDeVehiculo(), null, ticket.getTotalAPagar());
 	}
 
-	public Ticket convertToDomain(TicketEntity ticketEntity) {
-		if(ticketEntity == null) {
+	public Ticket convertirADominio(EntidadTicket entidadTicket) {
+		if(entidadTicket == null) {
 			return null;
 		}
-		if (ticketEntity.getTipoDeVehiculo().equals(Ticket.MOTO)) {
-			new TicketMoto(ticketEntity.getId(), ticketEntity.getPlaca(), ticketEntity.getHoraDeEntrada(),
-					ticketEntity.getHoraDeSalida(), ticketEntity.getTipoDeVehiculo(), ticketEntity.getTotalAPagar(),
-					ticketEntity.getCilindraje());
+		if (entidadTicket.getTipoDeVehiculo().equals(Ticket.MOTO)) {
+			new TicketMoto(entidadTicket.getId(), entidadTicket.getPlaca(), entidadTicket.getHoraDeEntrada(),
+					entidadTicket.getHoraDeSalida(), entidadTicket.getTipoDeVehiculo(), entidadTicket.getTotalAPagar(),
+					entidadTicket.getCilindraje());
 		}
-		return new TicketCarro(ticketEntity.getId(), ticketEntity.getPlaca(), ticketEntity.getHoraDeEntrada(),
-				ticketEntity.getHoraDeSalida(), ticketEntity.getTipoDeVehiculo(), ticketEntity.getTotalAPagar());
+		return new TicketCarro(entidadTicket.getId(), entidadTicket.getPlaca(), entidadTicket.getHoraDeEntrada(),
+				entidadTicket.getHoraDeSalida(), entidadTicket.getTipoDeVehiculo(), entidadTicket.getTotalAPagar());
 	}
 }

@@ -24,7 +24,7 @@ import org.springframework.test.context.TestPropertySource;
 import ceiba.com.co.parqueadero.comando.dominio.entidad.Ticket;
 import ceiba.com.co.parqueadero.comando.dominio.entidad.Vigilante;
 import ceiba.com.co.parqueadero.comando.dominio.entidad.util.GeneradorDeFecha;
-import ceiba.com.co.parqueadero.comando.dominio.excepcion.DiaNoHabilException;
+import ceiba.com.co.parqueadero.comando.dominio.excepcion.ExcepcionDiaNoHabil;
 import ceiba.com.co.parqueadero.comando.testdatabuilder.TicketCarroBuilder;
 
 @SpringBootTest
@@ -47,14 +47,14 @@ public class TestVigilante {
 	@Test
 	public void registrarCarroEnDiaHabil() {
 		// arrange
-		LocalDateTime fechaIngreso = LocalDateTime.of(2019, 7, 11, 12, 0, 0);
+		LocalDateTime fechaDeIngreso = LocalDateTime.of(2019, 7, 11, 12, 0, 0);
 		String placa = "ABC078";
-		Ticket carro = new TicketCarroBuilder().conPlaca(placa).conHoraDeEntrada(fechaIngreso).build();
+		Ticket carro = new TicketCarroBuilder().conPlaca(placa).conHoraDeEntrada(fechaDeIngreso).build();
 		Calendar fechaActual = Calendar.getInstance();
 		long idTicket = 1;
 		long resultado;
 
-		fechaActual.setTime(Date.from(fechaIngreso.atZone(ZoneId.systemDefault()).toInstant()));
+		fechaActual.setTime(Date.from(fechaDeIngreso.atZone(ZoneId.systemDefault()).toInstant()));
 		
 		doReturn(0L).when(vigilante).contarVehiculosParqueadosPorTipo(carro.getTipoDeVehiculo());
 		doReturn(false).when(vigilante).existeVehiculoEnParqueadero(carro.getPlaca());
@@ -73,19 +73,19 @@ public class TestVigilante {
 	@Test
 	public void registrarCarroEnDiaNoHabil() {
 		// arrange
-		LocalDateTime fechaIngreso = LocalDateTime.of(2019, 07, 7, 12, 0, 0);
+		LocalDateTime fechaDeIngreso = LocalDateTime.of(2019, 07, 7, 12, 0, 0);
 		String placa = "ABC078";
-		Ticket carro = new TicketCarroBuilder().conPlaca(placa).conHoraDeEntrada(fechaIngreso).build();
+		Ticket carro = new TicketCarroBuilder().conPlaca(placa).conHoraDeEntrada(fechaDeIngreso).build();
 
 		Calendar fechaActual = Calendar.getInstance();
-		fechaActual.setTime(Date.from(fechaIngreso.atZone(ZoneId.systemDefault()).toInstant()));
+		fechaActual.setTime(Date.from(fechaDeIngreso.atZone(ZoneId.systemDefault()).toInstant()));
 
 		when(generadorDeFecha.obtenerFechaActual()).thenReturn(fechaActual);
 		// act
 		try {
 			vigilante.registrarEntradaDeVehiculo(carro);
 			fail();
-		} catch (DiaNoHabilException e) {
+		} catch (ExcepcionDiaNoHabil e) {
 			// assert
 			assertEquals(Vigilante.DIA_NO_HABIL, e.getMessage());
 		}
