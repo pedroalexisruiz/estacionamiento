@@ -6,7 +6,7 @@ pipeline{
 	
         
 		triggers {
-        pollSCM('@hourly')
+        pollSCM('@daily')
 		}
 	
 		tools {
