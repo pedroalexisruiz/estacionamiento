@@ -16,7 +16,6 @@ import ceiba.com.co.parqueadero.comando.aplicacion.manejadores.ManejadorRegistra
 
 @RestController
 @RequestMapping("/tickets")
-// @Api(tags = { "Controlador del comando de tickets"})
 public class ControladorComandoTicket {
 
 	private final ManejadorRegistrarEntrada manejadorDeRegistroDeEntrada;
@@ -30,13 +29,11 @@ public class ControladorComandoTicket {
 	}
 
 	@PostMapping
-	// @ApiOperation("Registrar entrada de vehiculo")
 	public RespuestaComando<Long> registrarEntrada(@RequestBody ComandoTicket ticketComando) {
 		return manejadorDeRegistroDeEntrada.ejecutar(ticketComando);
 	}
 
 	@PutMapping
-	// @ApiOperation("Registrar salida de vehiculo")
 	public RespuestaComando<LocalDateTime> registrarSalida(@RequestBody ComandoTicket ticketComando) {
 		return manejadorDeRegistroDeSalida.ejecutar(ticketComando);
 	}

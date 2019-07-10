@@ -1,10 +1,7 @@
 package ceiba.com.co.parqueadero.comando.dominio.repositorio;
 
-import org.springframework.stereotype.Repository;
-
 import ceiba.com.co.parqueadero.comando.dominio.entidad.Ticket;
 
-@Repository
 public interface RepositorioTicket {
 
 	/**

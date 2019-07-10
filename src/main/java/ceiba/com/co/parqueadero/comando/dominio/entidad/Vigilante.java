@@ -2,9 +2,6 @@ package ceiba.com.co.parqueadero.comando.dominio.entidad;
 
 import java.util.Calendar;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-
 import ceiba.com.co.parqueadero.comando.dominio.entidad.util.GeneradorDeFecha;
 import ceiba.com.co.parqueadero.comando.dominio.excepcion.ExcepcionDiaNoHabil;
 import ceiba.com.co.parqueadero.comando.dominio.excepcion.ExcepcionParqueaderoSinEspacio;
@@ -13,7 +10,6 @@ import ceiba.com.co.parqueadero.comando.dominio.repositorio.RepositorioTicket;
 import ceiba.com.co.parqueadero.comando.dominio.servicio.ServicioRegistrarEntrada;
 import ceiba.com.co.parqueadero.comando.dominio.servicio.ServicioRegistrarSalida;
 
-@Service
 public class Vigilante implements ServicioRegistrarEntrada, ServicioRegistrarSalida {
 
 	private static final int NUMERO_MAXIMO_CARROS = 20;
@@ -26,13 +22,12 @@ public class Vigilante implements ServicioRegistrarEntrada, ServicioRegistrarSal
 	public static final String EL_VEHICULO_NO_SE_ENCUENTRA_EN_EL_PARQUEADERO = "El vehículo no se encuentra en el parqueadero.";
 	public static final String NO_HAY_ESPACIOS_DISPONIBLES = "No hay espacios disponibles en el parqueadero.";
 
-	private final RepositorioTicket ticketRepository;
-	@Autowired
+	private final RepositorioTicket repositorioDeTickets;
 	private final GeneradorDeFecha generadorDeFecha;
 
-	public Vigilante(RepositorioTicket ticketRepository, GeneradorDeFecha generadorDeFecha) {
+	public Vigilante(RepositorioTicket repositorioDeTickets, GeneradorDeFecha generadorDeFecha) {
 		super();
-		this.ticketRepository = ticketRepository;
+		this.repositorioDeTickets = repositorioDeTickets;
 		this.generadorDeFecha = generadorDeFecha;
 	}
 
@@ -75,11 +70,11 @@ public class Vigilante implements ServicioRegistrarEntrada, ServicioRegistrarSal
 	}
 	
 	public long registrarEntrada(Ticket ticket) {
-		return this.ticketRepository.registrarEntrada(ticket);
+		return this.repositorioDeTickets.registrarEntrada(ticket);
 	}
 	
 	public long contarVehiculosParqueadosPorTipo(String tipoDeVehiculo) {
-		Long cantidad = this.ticketRepository.contarVehiculosParqueadosPorTipo(tipoDeVehiculo);
+		Long cantidad = this.repositorioDeTickets.contarVehiculosParqueadosPorTipo(tipoDeVehiculo);
 		return cantidad == null? 0: cantidad.longValue();
 	}
 
@@ -103,18 +98,18 @@ public class Vigilante implements ServicioRegistrarEntrada, ServicioRegistrarSal
 	}
 	
 	public boolean existeVehiculoEnParqueadero(String placa) {
-		return this.ticketRepository.existeVehiculoEnParqueadero(placa);
+		return this.repositorioDeTickets.existeVehiculoEnParqueadero(placa);
 	}
 
 	@Override
 	public Ticket registrarSalidaDelVehiculo(String plate) {
-		Ticket ticket = this.ticketRepository.buscarPorPlacaSinSalida(plate);
+		Ticket ticket = this.repositorioDeTickets.buscarPorPlacaSinSalida(plate);
 		if (ticket == null) {
 			throw new ExcepcionVehiculoYaIngresado(EL_VEHICULO_NO_SE_ENCUENTRA_EN_EL_PARQUEADERO);
 		}
 		ticket.setHoraDeSalida(generadorDeFecha.obtenerHoraLocalActual());
 		ticket.calcularPrecioAPagar();
-		this.ticketRepository.registrarSalida(ticket);
+		this.repositorioDeTickets.registrarSalida(ticket);
 		return ticket;
 	}
 }
