@@ -2,6 +2,7 @@ package ceiba.com.co.parqueadero.consulta.infraestructura.persistencia.dao.mapeo
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.time.LocalDateTime;
 
 import org.springframework.jdbc.core.RowMapper;
 
@@ -11,12 +12,11 @@ public class TicketMapper implements RowMapper<Ticket> {
 
 	@Override
 	public Ticket mapRow(ResultSet rs, int rowNum) throws SQLException {
-		if(!rs.next()) {
-			return null;
-		}
+		LocalDateTime horaDeSalida = rs.getTimestamp("horaDeSalida") != null
+				? rs.getTimestamp("horaDeSalida").toLocalDateTime()
+				: null;
 		return new Ticket(rs.getLong("id"), rs.getString("placa"), rs.getTimestamp("horaDeEntrada").toLocalDateTime(),
-				rs.getTimestamp("horaDeSalida").toLocalDateTime(), rs.getString("tipoDeVehiculo"), rs.getLong("totalAPagar"),
-				rs.getInt("cilindraje"));
+				horaDeSalida, rs.getString("tipoDeVehiculo"), rs.getLong("totalAPagar"), rs.getInt("cilindraje"));
 	}
 
 }
