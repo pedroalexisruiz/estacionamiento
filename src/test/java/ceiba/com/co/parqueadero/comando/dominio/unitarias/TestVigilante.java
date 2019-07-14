@@ -51,14 +51,13 @@ public class TestVigilante {
 		String placa = "ABC078";
 		Ticket carro = new TicketCarroBuilder().conPlaca(placa).conHoraDeEntrada(fechaDeIngreso).build();
 		Calendar fechaActual = Calendar.getInstance();
-		long idTicket = 1;
-		long resultado;
+		LocalDateTime resultado;
 
 		fechaActual.setTime(Date.from(fechaDeIngreso.atZone(ZoneId.systemDefault()).toInstant()));
 		
 		doReturn(0L).when(vigilante).contarVehiculosParqueadosPorTipo(carro.getTipoDeVehiculo());
 		doReturn(false).when(vigilante).existeVehiculoEnParqueadero(carro.getPlaca());
-		doReturn(idTicket).when(vigilante).registrarEntrada(carro);
+		doReturn(fechaDeIngreso).when(vigilante).registrarEntrada(carro);
 		
 		when(generadorDeFecha.obtenerFechaActual()).thenReturn(fechaActual);
 		when(generadorDeFecha.obtenerHoraLocalActual()).thenReturn(
@@ -67,7 +66,7 @@ public class TestVigilante {
 		resultado = vigilante.registrarEntradaDeVehiculo(carro);
 
 		// assert
-		assertEquals(idTicket, resultado);
+		assertEquals(fechaDeIngreso, resultado);
 	}
 
 	@Test

@@ -31,7 +31,7 @@ public class ControladorComandoTicket {
 	}
 
 	@PostMapping
-	public RespuestaComando<Long> registrarEntrada(@RequestBody ComandoTicket ticketComando) {
+	public RespuestaComando<LocalDateTime> registrarEntrada(@RequestBody ComandoTicket ticketComando) {
 		return manejadorDeRegistroDeEntrada.ejecutar(ticketComando);
 	}
 

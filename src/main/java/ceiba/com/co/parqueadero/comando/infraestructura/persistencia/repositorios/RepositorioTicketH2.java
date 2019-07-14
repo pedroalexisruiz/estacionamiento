@@ -1,5 +1,6 @@
 package ceiba.com.co.parqueadero.comando.infraestructura.persistencia.repositorios;
 
+import java.time.LocalDateTime;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,8 +21,8 @@ public class RepositorioTicketH2 implements RepositorioTicket {
 	TicketBuilder ticketBuilder;
 
 	@Override
-	public Long registrarEntrada(Ticket ticket) {
-		return repositorioTicket.save(ticketBuilder.convertirAEntidad(ticket)).getId();
+	public LocalDateTime registrarEntrada(Ticket ticket) {
+		return repositorioTicket.save(ticketBuilder.convertirAEntidad(ticket)).getHoraDeEntrada();
 	}
 
 	@Override

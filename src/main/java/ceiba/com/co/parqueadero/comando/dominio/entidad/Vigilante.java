@@ -1,5 +1,6 @@
 package ceiba.com.co.parqueadero.comando.dominio.entidad;
 
+import java.time.LocalDateTime;
 import java.util.Calendar;
 
 import ceiba.com.co.parqueadero.comando.dominio.entidad.util.GeneradorDeFecha;
@@ -31,7 +32,7 @@ public class Vigilante implements ServicioRegistrarEntrada, ServicioRegistrarSal
 		this.generadorDeFecha = generadorDeFecha;
 	}
 
-	public Long registrarEntradaDeVehiculo(Ticket ticket) {
+	public LocalDateTime registrarEntradaDeVehiculo(Ticket ticket) {
 		verificarPlacasRestringidas(ticket.getPlaca());
 		verificarDisponibilidad(ticket.getTipoDeVehiculo());
 		verificarVehiculoDentro(ticket);
@@ -69,7 +70,7 @@ public class Vigilante implements ServicioRegistrarEntrada, ServicioRegistrarSal
 		}
 	}
 	
-	public long registrarEntrada(Ticket ticket) {
+	public LocalDateTime registrarEntrada(Ticket ticket) {
 		return this.repositorioDeTickets.registrarEntrada(ticket);
 	}
 	

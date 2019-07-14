@@ -1,5 +1,7 @@
 package ceiba.com.co.parqueadero.comando.dominio.repositorio;
 
+import java.time.LocalDateTime;
+
 import ceiba.com.co.parqueadero.comando.dominio.entidad.Ticket;
 
 public interface RepositorioTicket {
@@ -10,7 +12,7 @@ public interface RepositorioTicket {
 	 * @param ticket
 	 * @return el id del ticket generado
 	 */
-	Long registrarEntrada(Ticket ticket);
+	LocalDateTime registrarEntrada(Ticket ticket);
 
 	/**
 	 * Permite actualizar un ticket

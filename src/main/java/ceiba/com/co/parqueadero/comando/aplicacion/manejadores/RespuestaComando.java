@@ -2,13 +2,13 @@ package ceiba.com.co.parqueadero.comando.aplicacion.manejadores;
 
 public class RespuestaComando<T> {
 
-	private T valor;
+	private T datos;
 
-	public RespuestaComando(T valor) {
-		this.valor = valor;
+	public RespuestaComando(T datos) {
+		this.datos = datos;
 	}
 
-	public T getValor() {
-		return valor;
+	public T getDatos() {
+		return datos;
 	}
 }

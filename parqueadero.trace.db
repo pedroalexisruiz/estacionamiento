@@ -2813,3 +2813,11 @@ Caused by: java.nio.channels.OverlappingFileLockException
 	at java.nio.channels.FileChannel.tryLock(Unknown Source)
 	at org.h2.mvstore.FileStore.open(FileStore.java:163)
 	... 28 more
+2019-07-14 11:47:22 jdbc[13]: exception
+org.h2.jdbc.JdbcSQLDataException: Valor demasiado largo para la columna """PLACA"" VARCHAR(6) NOT NULL": "'URG-585' (7)"
+Value too long for column """PLACA"" VARCHAR(6) NOT NULL": "'URG-585' (7)"; SQL statement:
+insert into Ticket (cilindraje, horaDeEntrada, horaDeSalida, placa, tipoDeVehiculo, totalAPagar, id) values (?, ?, ?, ?, ?, ?, ?) [22001-199]
+2019-07-14 11:47:26 jdbc[13]: exception
+org.h2.jdbc.JdbcSQLDataException: Valor demasiado largo para la columna """PLACA"" VARCHAR(6) NOT NULL": "'URG-585' (7)"
+Value too long for column """PLACA"" VARCHAR(6) NOT NULL": "'URG-585' (7)"; SQL statement:
+insert into Ticket (cilindraje, horaDeEntrada, horaDeSalida, placa, tipoDeVehiculo, totalAPagar, id) values (?, ?, ?, ?, ?, ?, ?) [22001-199]
