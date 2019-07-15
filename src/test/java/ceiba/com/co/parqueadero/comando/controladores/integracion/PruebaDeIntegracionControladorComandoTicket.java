@@ -32,7 +32,6 @@ import ceiba.com.co.parqueadero.ParqueaderoApplication;
 import ceiba.com.co.parqueadero.comando.aplicacion.entidad.ComandoTicket;
 import ceiba.com.co.parqueadero.comando.dominio.entidad.Ticket;
 import ceiba.com.co.parqueadero.comando.dominio.entidad.Vigilante;
-import ceiba.com.co.parqueadero.comando.infraestructura.configuracion.ServicioBean;
 import ceiba.com.co.parqueadero.comando.infraestructura.controladores.ControladorComandoTicket;
 import ceiba.com.co.parqueadero.comando.infraestructura.persistencia.repositorios.RepositorioTicketH2;
 import ceiba.com.co.parqueadero.comando.testdatabuilder.TicketCommandBuilder;
@@ -40,9 +39,9 @@ import ceiba.com.co.parqueadero.comando.testdatabuilder.TicketCommandBuilder;
 @SpringBootTest(webEnvironment = WebEnvironment.RANDOM_PORT)
 @RunWith(SpringRunner.class)
 @TestPropertySource(locations = "classpath:application-test.properties")
-@ContextConfiguration(classes = {ParqueaderoApplication.class, ServicioBean.class})
+@ComponentScan("ceiba.com.co")
 public class PruebaDeIntegracionControladorComandoTicket {
-//mockMVC
+
 	private MockMvc mvc;
 	private String json;
 	private final String url = "/tickets";
