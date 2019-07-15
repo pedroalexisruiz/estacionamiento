@@ -115,11 +115,10 @@ public class PruebaDeIntegracionControladorComandoTicket {
 	public void sacarCarroNoRegistrado() {
 		// arrange
 		ticketComando = new TicketCommandBuilder().conPlaca(PLACA).build();
-		json = asJsonString(ticketComando);
 		try {
 			// act
 			mvc.perform(
-					put(URL).content(json).contentType(MediaType.APPLICATION_JSON).accept(MediaType.APPLICATION_JSON))
+					put(URL +"/"+PLACA).contentType(MediaType.APPLICATION_JSON).accept(MediaType.APPLICATION_JSON))
 					.andExpect(status().isInternalServerError())
 					.andExpect(content().string(Vigilante.EL_VEHICULO_NO_SE_ENCUENTRA_EN_EL_PARQUEADERO));
 		} catch (Exception e) {
@@ -142,7 +141,7 @@ public class PruebaDeIntegracionControladorComandoTicket {
 
 			// act
 			mvc.perform(
-					put(URL).content(json).contentType(MediaType.APPLICATION_JSON).accept(MediaType.APPLICATION_JSON))
+					put(URL +"/"+PLACA).contentType(MediaType.APPLICATION_JSON).accept(MediaType.APPLICATION_JSON))
 					.andExpect(status().isOk());
 		} catch (Exception e) {
 			fail(e.getMessage());

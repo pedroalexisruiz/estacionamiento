@@ -4,6 +4,7 @@ import java.time.LocalDateTime;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -35,8 +36,8 @@ public class ControladorComandoTicket {
 		return manejadorDeRegistroDeEntrada.ejecutar(ticketComando);
 	}
 
-	@PutMapping
-	public RespuestaComando<LocalDateTime> registrarSalida(@RequestBody ComandoTicket ticketComando) {
-		return manejadorDeRegistroDeSalida.ejecutar(ticketComando);
+	@PutMapping("/{placa}")
+	public RespuestaComando<LocalDateTime> registrarSalida(@PathVariable String placa) {
+		return manejadorDeRegistroDeSalida.ejecutar(placa);
 	}
 }
