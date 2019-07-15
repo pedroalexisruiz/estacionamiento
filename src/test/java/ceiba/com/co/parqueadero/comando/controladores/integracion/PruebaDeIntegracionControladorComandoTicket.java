@@ -17,8 +17,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.context.SpringBootTest.WebEnvironment;
 import org.springframework.context.annotation.ComponentScan;
+import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 import org.springframework.http.MediaType;
-import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.jdbc.Sql;
 import org.springframework.test.context.junit4.SpringRunner;
@@ -28,7 +28,6 @@ import org.springframework.web.context.WebApplicationContext;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 
-import ceiba.com.co.parqueadero.ParqueaderoApplication;
 import ceiba.com.co.parqueadero.comando.aplicacion.entidad.ComandoTicket;
 import ceiba.com.co.parqueadero.comando.dominio.entidad.Ticket;
 import ceiba.com.co.parqueadero.comando.dominio.entidad.Vigilante;
@@ -40,13 +39,14 @@ import ceiba.com.co.parqueadero.comando.testdatabuilder.TicketCommandBuilder;
 @RunWith(SpringRunner.class)
 @TestPropertySource(locations = "classpath:application-test.properties")
 @ComponentScan("ceiba.com.co")
+@EnableJpaRepositories(basePackages = "ceiba.com.co.parqueadero.comando.infraestructura.persistencia.repositorios.implejpa")
 public class PruebaDeIntegracionControladorComandoTicket {
 
 	private MockMvc mvc;
 	private String json;
-	private final String url = "/tickets";
+	private static final String URL = "/tickets";
 
-	private final String PLACA = "PED123";
+	private static final String PLACA = "PED123";
 	@Autowired
 	ControladorComandoTicket controlador;
 
@@ -78,7 +78,7 @@ public class PruebaDeIntegracionControladorComandoTicket {
 		try {
 			// act
 			mvc.perform(
-					post(url).content(json).contentType(MediaType.APPLICATION_JSON).accept(MediaType.APPLICATION_JSON))
+					post(URL).content(json).contentType(MediaType.APPLICATION_JSON).accept(MediaType.APPLICATION_JSON))
 					.andExpect(status().isOk());
 		} catch (Exception e) {
 			fail();
@@ -101,7 +101,7 @@ public class PruebaDeIntegracionControladorComandoTicket {
 		try {
 			// act
 			mvc.perform(
-					post(url).content(json).contentType(MediaType.APPLICATION_JSON).accept(MediaType.APPLICATION_JSON))
+					post(URL).content(json).contentType(MediaType.APPLICATION_JSON).accept(MediaType.APPLICATION_JSON))
 					.andExpect(status().isOk());
 		} catch (Exception e) {
 			fail();
@@ -121,7 +121,7 @@ public class PruebaDeIntegracionControladorComandoTicket {
 		try {
 			// act
 			mvc.perform(
-					put(url).content(json).contentType(MediaType.APPLICATION_JSON).accept(MediaType.APPLICATION_JSON))
+					put(URL).content(json).contentType(MediaType.APPLICATION_JSON).accept(MediaType.APPLICATION_JSON))
 					.andExpect(status().isInternalServerError())
 					.andExpect(content().string(Vigilante.EL_VEHICULO_NO_SE_ENCUENTRA_EN_EL_PARQUEADERO));
 		} catch (Exception e) {
@@ -139,12 +139,12 @@ public class PruebaDeIntegracionControladorComandoTicket {
 
 		try {
 			mvc.perform(
-					post(url).content(json).contentType(MediaType.APPLICATION_JSON).accept(MediaType.APPLICATION_JSON))
+					post(URL).content(json).contentType(MediaType.APPLICATION_JSON).accept(MediaType.APPLICATION_JSON))
 					.andExpect(status().isOk());
 
 			// act
 			mvc.perform(
-					put(url).content(json).contentType(MediaType.APPLICATION_JSON).accept(MediaType.APPLICATION_JSON))
+					put(URL).content(json).contentType(MediaType.APPLICATION_JSON).accept(MediaType.APPLICATION_JSON))
 					.andExpect(status().isOk());
 		} catch (Exception e) {
 			fail(e.getMessage());
@@ -165,11 +165,11 @@ public class PruebaDeIntegracionControladorComandoTicket {
 		// act
 		try {
 			mvc.perform(
-					post(url).content(json).contentType(MediaType.APPLICATION_JSON).accept(MediaType.APPLICATION_JSON))
+					post(URL).content(json).contentType(MediaType.APPLICATION_JSON).accept(MediaType.APPLICATION_JSON))
 					.andExpect(status().isOk());
 
 			mvc.perform(
-					post(url).content(json).contentType(MediaType.APPLICATION_JSON).accept(MediaType.APPLICATION_JSON))
+					post(URL).content(json).contentType(MediaType.APPLICATION_JSON).accept(MediaType.APPLICATION_JSON))
 					.andExpect(status().isOk());
 		} catch (Exception e) {
 			// assert
@@ -187,7 +187,7 @@ public class PruebaDeIntegracionControladorComandoTicket {
 		try {
 			// act
 			mvc.perform(
-					post(url).content(json).contentType(MediaType.APPLICATION_JSON).accept(MediaType.APPLICATION_JSON))
+					post(URL).content(json).contentType(MediaType.APPLICATION_JSON).accept(MediaType.APPLICATION_JSON))
 					.andExpect(status().isOk());
 			fail();
 		} catch (Exception e) {

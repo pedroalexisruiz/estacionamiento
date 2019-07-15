@@ -6,6 +6,7 @@ import org.springframework.context.annotation.Configuration;
 import ceiba.com.co.parqueadero.comando.dominio.entidad.Vigilante;
 import ceiba.com.co.parqueadero.comando.dominio.entidad.util.GeneradorDeFecha;
 import ceiba.com.co.parqueadero.comando.dominio.repositorio.RepositorioTicket;
+import ceiba.com.co.parqueadero.comando.infraestructura.persistencia.repositorios.RepositorioTicketH2;
 
 @Configuration
 public class ServicioBean {
@@ -18,5 +19,10 @@ public class ServicioBean {
 	@Bean
 	public GeneradorDeFecha crearGeneradorDeFechas() {
 		return GeneradorDeFecha.obtenerInstancia();
+	}
+	
+	@Bean
+	public RepositorioTicket crearRepositorio() {
+		return new RepositorioTicketH2();
 	}
 }
