@@ -4,7 +4,7 @@ import java.time.LocalDateTime;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Repository;
+import org.springframework.stereotype.Component;
 
 import ceiba.com.co.parqueadero.comando.dominio.entidad.Ticket;
 import ceiba.com.co.parqueadero.comando.dominio.repositorio.RepositorioTicket;
@@ -12,7 +12,7 @@ import ceiba.com.co.parqueadero.comando.infraestructura.persistencia.builder.Tic
 import ceiba.com.co.parqueadero.comando.infraestructura.persistencia.entidad.EntidadTicket;
 import ceiba.com.co.parqueadero.comando.infraestructura.persistencia.repositorios.implejpa.RepositorioTicketJpa;
 
-@Repository
+@Component
 public class RepositorioTicketH2 implements RepositorioTicket {
 
 	@Autowired
