@@ -14,8 +14,11 @@ import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
+import org.springframework.boot.autoconfigure.domain.EntityScan;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.context.SpringBootTest.WebEnvironment;
+import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 import org.springframework.http.MediaType;
 import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.jdbc.Sql;
@@ -35,7 +38,10 @@ import ceiba.com.co.parqueadero.comando.testdatabuilder.TicketCommandBuilder;
 
 @SpringBootTest(webEnvironment = WebEnvironment.RANDOM_PORT)
 @RunWith(SpringRunner.class)
+@EnableAutoConfiguration
 @TestPropertySource(locations = "classpath:application-test.properties")
+@EnableJpaRepositories(basePackages = "ceiba.com.co.parqueadero.comando.infraestructura.persistencia.repositorios.implejpa")
+@EntityScan("ceiba.com.co.parqueadero.comando.infraestructura.persistencia.entidad")
 public class PruebaDeIntegracionControladorComandoTicket {
 
 	private MockMvc mvc;
