@@ -19,6 +19,7 @@ import org.mockito.Mock;
 import org.mockito.Spy;
 import org.mockito.junit.MockitoJUnitRunner;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.context.annotation.ComponentScan;
 import org.springframework.test.context.TestPropertySource;
 
 import ceiba.com.co.parqueadero.comando.dominio.entidad.Ticket;
@@ -30,6 +31,7 @@ import ceiba.com.co.parqueadero.comando.testdatabuilder.TicketCarroBuilder;
 @SpringBootTest
 @RunWith(MockitoJUnitRunner.class)
 @TestPropertySource(locations = "classpath:application-test.properties")
+@ComponentScan("ceiba.com.co")
 public class TestVigilante {
 
 	@Mock
