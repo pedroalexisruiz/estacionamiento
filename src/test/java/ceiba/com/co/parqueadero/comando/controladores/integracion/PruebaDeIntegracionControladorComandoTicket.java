@@ -16,6 +16,7 @@ import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.jdbc.Sql;
 import org.springframework.test.context.junit4.SpringRunner;
 
+import ceiba.com.co.parqueadero.ParqueaderoApplication;
 import ceiba.com.co.parqueadero.comando.aplicacion.entidad.ComandoTicket;
 import ceiba.com.co.parqueadero.comando.dominio.entidad.Ticket;
 import ceiba.com.co.parqueadero.comando.dominio.entidad.Vigilante;
@@ -25,7 +26,7 @@ import ceiba.com.co.parqueadero.comando.infraestructura.controladores.Controlado
 import ceiba.com.co.parqueadero.comando.infraestructura.persistencia.repositorios.RepositorioTicketH2;
 import ceiba.com.co.parqueadero.comando.testdatabuilder.TicketCommandBuilder;
 
-@SpringBootTest
+@SpringBootTest(classes = ParqueaderoApplication.class)
 @RunWith(SpringRunner.class)
 @TestPropertySource(locations = "classpath:application-test.properties")
 @ComponentScan("ceiba.com.co")
