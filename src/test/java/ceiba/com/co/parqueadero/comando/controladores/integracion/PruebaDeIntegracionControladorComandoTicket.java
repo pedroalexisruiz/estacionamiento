@@ -4,6 +4,10 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 import org.junit.After;
 import org.junit.Before;
@@ -11,40 +15,50 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.test.context.SpringBootTest.WebEnvironment;
 import org.springframework.context.annotation.ComponentScan;
+import org.springframework.http.MediaType;
 import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.jdbc.Sql;
 import org.springframework.test.context.junit4.SpringRunner;
+import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.setup.MockMvcBuilders;
+import org.springframework.web.context.WebApplicationContext;
 
-import ceiba.com.co.parqueadero.ParqueaderoApplication;
+import com.fasterxml.jackson.databind.ObjectMapper;
+
 import ceiba.com.co.parqueadero.comando.aplicacion.entidad.ComandoTicket;
 import ceiba.com.co.parqueadero.comando.dominio.entidad.Ticket;
 import ceiba.com.co.parqueadero.comando.dominio.entidad.Vigilante;
-import ceiba.com.co.parqueadero.comando.dominio.excepcion.ExcepcionParqueaderoSinEspacio;
-import ceiba.com.co.parqueadero.comando.dominio.excepcion.ExcepcionVehiculoYaIngresado;
 import ceiba.com.co.parqueadero.comando.infraestructura.controladores.ControladorComandoTicket;
 import ceiba.com.co.parqueadero.comando.infraestructura.persistencia.repositorios.RepositorioTicketH2;
 import ceiba.com.co.parqueadero.comando.testdatabuilder.TicketCommandBuilder;
 
-@SpringBootTest(classes = ParqueaderoApplication.class)
+@SpringBootTest(webEnvironment = WebEnvironment.RANDOM_PORT)
 @RunWith(SpringRunner.class)
 @TestPropertySource(locations = "classpath:application-test.properties")
 @ComponentScan("ceiba.com.co")
 public class PruebaDeIntegracionControladorComandoTicket {
 //mockMVC
-	
-	private final String PLACA_BASE = "PED123";
+	private MockMvc mvc;
+	private String json;
+	private final String url = "/tickets";
+
+	private final String PLACA = "PED123";
 	@Autowired
 	ControladorComandoTicket controlador;
 
 	@Autowired
 	RepositorioTicketH2 repositorioTicketH2;
 
+	@Autowired
+	private WebApplicationContext context;
+
 	ComandoTicket ticketComando;
 
 	@Before
 	public void setUp() {
-
+		this.mvc = MockMvcBuilders.webAppContextSetup(context).build();
 	}
 
 	@After
@@ -55,56 +69,79 @@ public class PruebaDeIntegracionControladorComandoTicket {
 	@Test
 	public void ingresarCarro() {
 		// arrange
-		ticketComando = new TicketCommandBuilder().conPlaca(PLACA_BASE).build();
+		ticketComando = new TicketCommandBuilder().conPlaca(PLACA).build();
 		boolean vehiculoFueGuardado = false;
+		json = asJsonString(ticketComando);
 
-		// act
-		controlador.registrarEntrada(ticketComando);
-
-		// assert
+		try {
+			// act
+			mvc.perform(post(url).content(json).contentType(MediaType.APPLICATION_JSON)
+					.accept(MediaType.APPLICATION_JSON)).andExpect(status().isOk());
+		} catch (Exception e) {
+			fail();
+		}
 
 		vehiculoFueGuardado = repositorioTicketH2.existeVehiculoEnParqueadero(ticketComando.getPlaca());
+
+		// assert
 		assertTrue(vehiculoFueGuardado);
 	}
 
 	@Test
 	public void ingresarMoto() {
 		// arrange
-		ticketComando = new TicketCommandBuilder().conPlaca(PLACA_BASE).conCilindraje(250).conTipoDeVehiculo(Ticket.MOTO)
-				.build();
+		ticketComando = new TicketCommandBuilder().conPlaca(PLACA).conCilindraje(250)
+				.conTipoDeVehiculo(Ticket.MOTO).build();
 		boolean vehiculoFueGuardado = false;
+		json = asJsonString(ticketComando);
 
-		// act
-		controlador.registrarEntrada(ticketComando);
-
-		// assert
+		try {
+			// act
+			mvc.perform(post(url).content(json).contentType(MediaType.APPLICATION_JSON)
+					.accept(MediaType.APPLICATION_JSON)).andExpect(status().isOk());
+		} catch (Exception e) {
+			fail();
+		}
 
 		vehiculoFueGuardado = repositorioTicketH2.existeVehiculoEnParqueadero(ticketComando.getPlaca());
+
+		// assert
 		assertTrue(vehiculoFueGuardado);
 	}
 
 	@Test
 	public void sacarCarroNoRegistrado() {
 		// arrange
-		ticketComando = new TicketCommandBuilder().conPlaca(PLACA_BASE).build();
+		ticketComando = new TicketCommandBuilder().conPlaca(PLACA).build();
+		json = asJsonString(ticketComando);
 		try {
 			// act
-			controlador.registrarSalida(ticketComando);
-		} catch (ExcepcionVehiculoYaIngresado e) {
+			mvc.perform(put(url).content(json).contentType(MediaType.APPLICATION_JSON)
+					.accept(MediaType.APPLICATION_JSON)).andExpect(status().isInternalServerError())
+					.andExpect(content().string(Vigilante.EL_VEHICULO_NO_SE_ENCUENTRA_EN_EL_PARQUEADERO));
+		} catch (Exception e) {
 			// assert
-			assertEquals(Vigilante.EL_VEHICULO_NO_SE_ENCUENTRA_EN_EL_PARQUEADERO, e.getMessage());
+			assertEquals(e.getCause().getMessage(), Vigilante.EL_VEHICULO_NO_SE_ENCUENTRA_EN_EL_PARQUEADERO);
 		}
 	}
 
 	@Test
 	public void registrarSalida() {
 		// arrange
-		ticketComando = new TicketCommandBuilder().conPlaca(PLACA_BASE).build();
+		ticketComando = new TicketCommandBuilder().conPlaca(PLACA).build();
+		json = asJsonString(ticketComando);
 		boolean vehiculoFueGuardado = false;
-		controlador.registrarEntrada(ticketComando);
 
-		// act
-		controlador.registrarSalida(ticketComando);
+		try {
+			mvc.perform(post(url).content(json).contentType(MediaType.APPLICATION_JSON)
+					.accept(MediaType.APPLICATION_JSON)).andExpect(status().isOk());
+
+			// act
+			mvc.perform(put(url).content(json).contentType(MediaType.APPLICATION_JSON)
+					.accept(MediaType.APPLICATION_JSON)).andExpect(status().isOk());
+		} catch (Exception e) {
+			fail(e.getMessage());
+		}
 
 		// assert
 
@@ -115,16 +152,19 @@ public class PruebaDeIntegracionControladorComandoTicket {
 	@Test
 	public void ingresarCarroYaIngresado() {
 		// arrange
-		ticketComando = new TicketCommandBuilder().conPlaca(PLACA_BASE).build();
-
-		controlador.registrarEntrada(ticketComando);
+		ticketComando = new TicketCommandBuilder().conPlaca(PLACA).build();
+		json = asJsonString(ticketComando);
 
 		// act
 		try {
-			controlador.registrarEntrada(ticketComando);
-		} catch (ExcepcionVehiculoYaIngresado e) {
+			mvc.perform(post(url).content(json).contentType(MediaType.APPLICATION_JSON)
+					.accept(MediaType.APPLICATION_JSON)).andExpect(status().isOk());
+
+			mvc.perform(post(url).content(json).contentType(MediaType.APPLICATION_JSON)
+					.accept(MediaType.APPLICATION_JSON)).andExpect(status().isOk());
+		} catch (Exception e) {
 			// assert
-			assertEquals(Vigilante.EL_VEHICULO_SE_ENCUENTRA_EN_EL_PARQUEADERO, e.getMessage());
+			assertEquals(Vigilante.EL_VEHICULO_SE_ENCUENTRA_EN_EL_PARQUEADERO, e.getCause().getMessage());
 		}
 	}
 
@@ -132,15 +172,25 @@ public class PruebaDeIntegracionControladorComandoTicket {
 	@Sql("/insertarCarros.sql")
 	public void ingresarCarroSinCupo() {
 		// arrange
-		ticketComando = new TicketCommandBuilder().conPlaca(PLACA_BASE).build();
-
+		ticketComando = new TicketCommandBuilder().conPlaca(PLACA).build();
+		json = asJsonString(ticketComando);
+		
 		try {
 			// act
-			controlador.registrarEntrada(ticketComando);
+			mvc.perform(post(url).content(json).contentType(MediaType.APPLICATION_JSON)
+					.accept(MediaType.APPLICATION_JSON)).andExpect(status().isOk());
 			fail();
-		} catch (ExcepcionParqueaderoSinEspacio e) {
+		} catch (Exception e) {
 			// assert
-			assertEquals(Vigilante.NO_HAY_ESPACIOS_DISPONIBLES, e.getMessage());
+			assertEquals(Vigilante.NO_HAY_ESPACIOS_DISPONIBLES, e.getCause().getMessage());
+		}
+	}
+
+	public static String asJsonString(final Object obj) {
+		try {
+			return new ObjectMapper().writeValueAsString(obj);
+		} catch (Exception e) {
+			throw new RuntimeException(e);
 		}
 	}
 }
