@@ -39,7 +39,7 @@ import ceiba.com.co.parqueadero.comando.testdatabuilder.TicketCommandBuilder;
 @RunWith(SpringRunner.class)
 @TestPropertySource(locations = "classpath:application-test.properties")
 @ComponentScan("ceiba.com.co")
-@EnableJpaRepositories(basePackages = "ceiba.com.co.parqueadero.comando.infraestructura.persistencia.repositorios.implejpa")
+@EnableJpaRepositories(basePackages = "ceiba.com.co.parqueadero.comando.infraestructura.persistencia")
 public class PruebaDeIntegracionControladorComandoTicket {
 
 	private MockMvc mvc;
