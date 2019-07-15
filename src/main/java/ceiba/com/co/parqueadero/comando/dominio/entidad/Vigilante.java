@@ -3,8 +3,6 @@ package ceiba.com.co.parqueadero.comando.dominio.entidad;
 import java.time.LocalDateTime;
 import java.util.Calendar;
 
-import org.springframework.stereotype.Service;
-
 import ceiba.com.co.parqueadero.comando.dominio.entidad.util.GeneradorDeFecha;
 import ceiba.com.co.parqueadero.comando.dominio.excepcion.ExcepcionDiaNoHabil;
 import ceiba.com.co.parqueadero.comando.dominio.excepcion.ExcepcionParqueaderoSinEspacio;
@@ -13,7 +11,6 @@ import ceiba.com.co.parqueadero.comando.dominio.repositorio.RepositorioTicket;
 import ceiba.com.co.parqueadero.comando.dominio.servicio.ServicioRegistrarEntrada;
 import ceiba.com.co.parqueadero.comando.dominio.servicio.ServicioRegistrarSalida;
 
-@Service
 public class Vigilante implements ServicioRegistrarEntrada, ServicioRegistrarSalida {
 
 	private static final int NUMERO_MAXIMO_CARROS = 20;
