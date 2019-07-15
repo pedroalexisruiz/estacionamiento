@@ -24,7 +24,7 @@ public class EntidadTicket {
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	@Column(name = "id")
 	private Long id;
-	@Column(name = "placa", nullable = false, length = 6)
+	@Column(name = "placa", nullable = false, length = 10)
 	private String placa;
 	@Column(name = "horaDeEntrada", nullable = false)
 	private LocalDateTime horaDeEntrada;
